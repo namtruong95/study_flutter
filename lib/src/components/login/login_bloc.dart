@@ -4,17 +4,15 @@ import 'package:bloc/bloc.dart';
 
 import 'package:study_flutter/src/components/login/login.dart';
 import 'package:study_flutter/src/components/authentication/authentication.dart';
-import 'package:study_flutter/src/repositories/user_repository.dart';
+import 'package:study_flutter/src/repositories/auth_repository.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final UserRepository userRepository;
+  final AuthRepository authRepository = new AuthRepository();
   final AuthenticationBloc authenticationBloc;
 
   LoginBloc({
-    @required this.userRepository,
     @required this.authenticationBloc,
-  })  : assert(userRepository != null),
-        assert(authenticationBloc != null);
+  }) : assert(authenticationBloc != null);
 
   @override
   LoginState get initialState => LoginInitial();
@@ -28,8 +26,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginLoading();
 
       try {
-        final token = await userRepository.authenticate(
-          username: event.username,
+        final token = await authRepository.login(
+          email: event.email,
           password: event.password,
         );
 

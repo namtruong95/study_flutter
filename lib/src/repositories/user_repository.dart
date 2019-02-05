@@ -1,13 +1,7 @@
-import 'package:meta/meta.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class UserRepository {
-  Future<String> authenticate({
-    @required String username,
-    @required String password,
-  }) async {
-    await Future.delayed(Duration(seconds: 1));
-    return 'token';
-  }
+  final _storage = new FlutterSecureStorage();
 
   Future<void> deleteToken() async {
     /// delete from keystore/keychain
@@ -17,13 +11,13 @@ class UserRepository {
 
   Future<void> persistToken(String token) async {
     /// write to keystore/keychain
-    await Future.delayed(Duration(seconds: 1));
+    await _storage.write(key: 'access_token', value: token);
+
     return;
   }
 
-  Future<bool> hasToken() async {
+  Future<String> fetchToken() {
     /// read from keystore/keychain
-    await Future.delayed(Duration(seconds: 1));
-    return false;
+    return _storage.read(key: 'access_token');
   }
 }
