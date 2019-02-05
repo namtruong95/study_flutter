@@ -15,12 +15,24 @@ class HomePage extends StatelessWidget {
       ),
       body: Container(
         child: Center(
-            child: RaisedButton(
-          child: Text('logout'),
-          onPressed: () {
-            authenticationBloc.dispatch(LoggedOut());
-          },
-        )),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              RaisedButton(
+                child: Text('logout'),
+                onPressed: () {
+                  authenticationBloc.dispatch(LoggedOut());
+                },
+              ),
+              RaisedButton(
+                child: Text('post'),
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/posts');
+                },
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
