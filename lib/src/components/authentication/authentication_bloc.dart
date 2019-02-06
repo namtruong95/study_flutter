@@ -22,11 +22,11 @@ class AuthenticationBloc
   ) async* {
     if (event is AppStarted) {
       final String token = await userRepository.fetchToken();
-
-      if (token.isNotEmpty) {
-        yield AuthenticationAuthenticated(token: token);
-      } else {
+      print(token);
+      if (["", null, false].contains(token)) {
         yield AuthenticationUnauthenticated();
+      } else {
+        yield AuthenticationAuthenticated(token: token);
       }
     }
 
