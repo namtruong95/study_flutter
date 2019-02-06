@@ -1,14 +1,14 @@
-import 'dart:convert';
-
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
 import 'package:study_flutter/src/components/post/post.dart';
 import 'package:study_flutter/src/models/post.dart';
+import 'package:study_flutter/src/repositories/post_repository.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {
   final http.Client httpClient;
+  final PostRepository postRepositoty = new PostRepository();
 
   PostBloc({@required this.httpClient});
 
@@ -48,20 +48,13 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       state is PostLoaded && state.hasReachedMax;
 
   Future<List<Post>> _fetchPosts(int startIndex, int limit) async {
-    final response = await httpClient.get(
-        'https://jsonplaceholder.typicode.com/posts?_start=$startIndex&_limit=$limit');
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body) as List;
-      print(data);
-      return data.map((rawPost) {
-        return Post(
-          id: rawPost['id'],
-          title: rawPost['title'],
-          body: rawPost['body'],
-        );
-      }).toList();
-    } else {
-      throw Exception('error fetching posts');
-    }
+    final response = await this
+        .postRepositoty
+        .getListPost(startIndex: startIndex, limit: limit);
+
+    print(response);
+    return response;
+
+    // throw Exception('error fetching posts');
   }
 }

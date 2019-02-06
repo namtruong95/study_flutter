@@ -19,8 +19,9 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _usernameController =
+      TextEditingController(text: 'kakaka.biz@gmail.com');
+  final _passwordController = TextEditingController(text: 'Abcd@1234');
 
   LoginBloc get _loginBloc => widget.loginBloc;
 
@@ -79,7 +80,7 @@ class _LoginFormState extends State<LoginForm> {
 
   _onLoginButtonPressed() {
     _loginBloc.dispatch(LoginButtonPressed(
-      username: _usernameController.text,
+      email: _usernameController.text,
       password: _passwordController.text,
     ));
   }

@@ -20,13 +20,10 @@ class _LoginPageState extends State<LoginPage> {
   LoginBloc _loginBloc;
   AuthenticationBloc _authenticationBloc;
 
-  UserRepository get _userRepository => widget.userRepository;
-
   @override
   void initState() {
     _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
     _loginBloc = LoginBloc(
-      userRepository: _userRepository,
       authenticationBloc: _authenticationBloc,
     );
     super.initState();

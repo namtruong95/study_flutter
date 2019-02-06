@@ -30,6 +30,15 @@ class HomePage extends StatelessWidget {
                   Navigator.of(context).pushNamed('/posts');
                 },
               ),
+              RaisedButton(
+                child: Text('test'),
+                onPressed: () async {
+                  final token =
+                      await authenticationBloc.userRepository.fetchToken();
+
+                  print(token);
+                },
+              ),
             ],
           ),
         ),
