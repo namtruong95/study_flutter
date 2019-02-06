@@ -23,7 +23,6 @@ class HttpRepository {
           HttpHeaders.authorizationHeader, () => 'Bearer $token');
     }
 
-    print(headers);
     return this.httpClient.get(uri, headers: headers);
   }
 

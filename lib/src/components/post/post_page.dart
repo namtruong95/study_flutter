@@ -22,45 +22,40 @@ class _PostPageState extends State<PostPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: AppBar(
-        title: Text('Post'),
-      ),
-      body: new Container(
-        child: Center(
-          child: BlocBuilder(
-            bloc: _postBloc,
-            builder: (BuildContext context, PostState state) {
-              if (state is PostUninitialized) {
+    return Container(
+      child: Center(
+        child: BlocBuilder(
+          bloc: _postBloc,
+          builder: (BuildContext context, PostState state) {
+            if (state is PostUninitialized) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (state is PostError) {
+              return Center(
+                child: Text('failed to fetch posts'),
+              );
+            }
+            if (state is PostLoaded) {
+              if (state.posts.isEmpty) {
                 return Center(
-                  child: CircularProgressIndicator(),
+                  child: Text('no posts'),
                 );
               }
-              if (state is PostError) {
-                return Center(
-                  child: Text('failed to fetch posts'),
-                );
-              }
-              if (state is PostLoaded) {
-                if (state.posts.isEmpty) {
-                  return Center(
-                    child: Text('no posts'),
-                  );
-                }
-                return ListView.builder(
-                  itemBuilder: (BuildContext context, int index) {
-                    return index >= state.posts.length
-                        ? BottomLoader()
-                        : PostWidget(post: state.posts[index]);
-                  },
-                  itemCount: state.hasReachedMax
-                      ? state.posts.length
-                      : state.posts.length + 1,
-                  controller: _scrollController,
-                );
-              }
-            },
-          ),
+              return ListView.builder(
+                itemBuilder: (BuildContext context, int index) {
+                  return index >= state.posts.length
+                      ? BottomLoader()
+                      : PostWidget(post: state.posts[index]);
+                },
+                itemCount: state.hasReachedMax
+                    ? state.posts.length
+                    : state.posts.length + 1,
+                controller: _scrollController,
+              );
+            }
+          },
         ),
       ),
     );

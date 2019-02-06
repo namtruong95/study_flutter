@@ -48,13 +48,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       state is PostLoaded && state.hasReachedMax;
 
   Future<List<Post>> _fetchPosts(int startIndex, int limit) async {
-    final response = await this
+    return await this
         .postRepositoty
         .getListPost(startIndex: startIndex, limit: limit);
-
-    print(response);
-    return response;
-
-    // throw Exception('error fetching posts');
   }
 }
