@@ -30,9 +30,9 @@ class HttpRepository {
   Future<http.Response> post(String url, bodyJson, [paramsJson]) async {
     var uri = Uri.https(baseUri, url);
 
-    // if (paramsJson) {
-    //   uri = Uri.https(baseUri, url, paramsJson);
-    // }
+    if (!['', null, false].contains(paramsJson)) {
+      uri = Uri.https(baseUri, url, paramsJson);
+    }
 
     const String token = '';
     final Map<String, String> headers = {
