@@ -1,16 +1,13 @@
 import 'dart:async';
-import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 
 import 'package:study_flutter/src/components/authentication/authentication.dart';
+import 'package:study_flutter/src/global_scope.dart';
 import 'package:study_flutter/src/repositories/user_repository.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final UserRepository userRepository;
-
-  AuthenticationBloc({@required this.userRepository})
-      : assert(userRepository != null);
+  final UserRepository userRepository = new UserRepository();
 
   @override
   AuthenticationState get initialState => AuthenticationUninitialized();
@@ -39,6 +36,7 @@ class AuthenticationBloc
     if (event is LoggedOut) {
       yield AuthenticationLoading();
       await userRepository.deleteToken();
+      GlobalScope().clear();
       yield AuthenticationUnauthenticated();
     }
   }

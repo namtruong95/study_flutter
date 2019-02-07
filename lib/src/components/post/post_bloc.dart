@@ -34,7 +34,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
                   hasReachedMax: false,
                 );
         }
-      } catch (_) {
+      } catch (e) {
         yield PostError();
       }
     }
@@ -47,8 +47,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   bool _hasReachedMax(PostState state) =>
       state is PostLoaded && state.hasReachedMax;
 
-  Future<List<Post>> _fetchPosts(int startIndex, int limit) async {
-    return await this
+  Future<List<Post>> _fetchPosts(int startIndex, int limit) {
+    return this
         .postRepositoty
         .getListPost(startIndex: startIndex, limit: limit);
   }

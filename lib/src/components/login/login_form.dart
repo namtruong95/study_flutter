@@ -44,29 +44,48 @@ class _LoginFormState extends State<LoginForm> {
           });
         }
 
-        return Form(
-          child: Column(
-            children: [
-              TextFormField(
-                decoration: InputDecoration(labelText: 'username'),
-                controller: _usernameController,
+        return Column(
+          children: <Widget>[
+            Text(
+              "Login App",
+              textScaleFactor: 2.0,
+            ),
+            Form(
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: _usernameController,
+                      decoration: InputDecoration(labelText: 'email'),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: _passwordController,
+                      decoration: InputDecoration(labelText: 'password'),
+                      obscureText: true,
+                    ),
+                  )
+                ],
               ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'password'),
-                controller: _passwordController,
-                obscureText: true,
-              ),
-              RaisedButton(
-                onPressed:
-                    state is! LoginLoading ? _onLoginButtonPressed : null,
-                child: Text('Login'),
-              ),
-              Container(
-                child:
-                    state is LoginLoading ? CircularProgressIndicator() : null,
-              ),
-            ],
-          ),
+            ),
+            state is! LoginLoading
+                ? RaisedButton(
+                    padding: EdgeInsets.only(left: 50.0, right: 50.0),
+                    onPressed:
+                        state is! LoginLoading ? _onLoginButtonPressed : null,
+                    child: new Text(
+                      "Login",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    color: Colors.blue,
+                  )
+                : CircularProgressIndicator()
+          ],
         );
       },
     );
