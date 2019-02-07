@@ -1,52 +1,78 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:study_flutter/src/global_scope.dart';
 
 class HttpRepository {
-  final http.Client httpClient;
+  static final HttpRepository _httpRepository = new HttpRepository._internal();
+  factory HttpRepository() => _httpRepository;
+  HttpRepository._internal();
+
+  final http.Client httpClient = new http.Client();
   final String baseUri = 'api.sod.bla-one.net';
-  final String baseUri2 = r'jsonplaceholder.typicode.com';
+  final String baseUri2 = 'jsonplaceholder.typicode.com';
+  final JsonDecoder _decoder = new JsonDecoder();
 
-  HttpRepository({@required this.httpClient});
-
-  Future<http.Response> get(String url, [paramsJson]) async {
+  FutureOr<dynamic> get(String url, [paramsJson]) async {
     final uri = Uri.https(baseUri2, url, paramsJson);
-    const String token = '';
-    final Map<String, String> headers = {
-      HttpHeaders.contentTypeHeader: 'application/json',
-    };
+    final headers = await _generateHeaders();
 
-    if (token.isNotEmpty) {
-      headers.putIfAbsent(
-          HttpHeaders.authorizationHeader, () => 'Bearer $token');
-    }
-
-    return this.httpClient.get(uri, headers: headers);
+    return this
+        .httpClient
+        .get(uri, headers: headers)
+        .then((http.Response response) {
+      return _handleResponse(response);
+    });
   }
 
-  Future<http.Response> post(String url, bodyJson, [paramsJson]) async {
+  FutureOr<dynamic> post(String url, bodyJson, [paramsJson]) async {
     var uri = Uri.https(baseUri, url);
 
     if (!['', null, false].contains(paramsJson)) {
       uri = Uri.https(baseUri, url, paramsJson);
     }
 
-    const String token = '';
+    final headers = await _generateHeaders();
+
+    return this
+        .httpClient
+        .post(
+          uri,
+          headers: headers,
+          body: json.encode(bodyJson),
+        )
+        .then((http.Response response) {
+      return _handleResponse(response);
+    });
+  }
+
+  Future<Map<String, String>> _generateHeaders() async {
     final Map<String, String> headers = {
       HttpHeaders.contentTypeHeader: 'application/json',
     };
 
-    if (token.isNotEmpty) {
+    final String token = GlobalScope().token;
+
+    if (!['', null, false, 0].contains(token)) {
       headers.putIfAbsent(
           HttpHeaders.authorizationHeader, () => 'Bearer $token');
     }
 
-    return this.httpClient.post(
-          uri,
-          headers: headers,
-          body: json.encode(bodyJson),
-        );
+    return headers;
+  }
+
+  _handleResponse(http.Response response) {
+    final String res = response.body;
+    final int statusCode = response.statusCode;
+
+    if (statusCode < 200 || statusCode >= 400 || json == null) {
+      final message = _decoder.convert(res)['message'];
+
+      throw new Exception(message ?? "Error while fetching data");
+    }
+
+    return _decoder.convert(res);
   }
 }

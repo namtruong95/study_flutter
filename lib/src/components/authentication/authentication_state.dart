@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:study_flutter/src/global_scope.dart';
 
 abstract class AuthenticationState extends Equatable {}
 
@@ -12,7 +13,9 @@ class AuthenticationAuthenticated extends AuthenticationState {
   final String token;
 
   @override
-  AuthenticationAuthenticated({@required this.token});
+  AuthenticationAuthenticated({@required this.token}) {
+    GlobalScope().token = this.token;
+  }
 
   String getToken() {
     return token;
