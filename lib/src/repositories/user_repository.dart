@@ -11,7 +11,7 @@ class UserRepository {
   Future<void> deleteToken() async {
     /// delete from keystore/keychain
     await _storage.delete(key: 'access_token');
-    await Future.delayed(Duration(microseconds: 500));
+    await Future.delayed(Duration(milliseconds: 500));
     return;
   }
 

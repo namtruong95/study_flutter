@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:study_flutter/src/commons/button_loading.dart';
 
 import 'package:study_flutter/src/components/authentication/authentication.dart';
 import 'package:study_flutter/src/components/login/login.dart';
@@ -71,20 +72,15 @@ class _LoginFormState extends State<LoginForm> {
                 ],
               ),
             ),
-            state is! LoginLoading
-                ? RaisedButton(
-                    padding: EdgeInsets.only(left: 50.0, right: 50.0),
-                    onPressed:
-                        state is! LoginLoading ? _onLoginButtonPressed : null,
-                    child: new Text(
-                      "Login",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    color: Colors.blue,
-                  )
-                : CircularProgressIndicator()
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: ButtonLoading(
+                text: 'Login',
+                onPressed: _onLoginButtonPressed,
+                isLoading: state is LoginLoading,
+                isSuccess: state is LoginSuccess,
+              ),
+            )
           ],
         );
       },

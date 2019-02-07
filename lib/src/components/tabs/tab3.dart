@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Tab3 extends StatelessWidget {
+  final PageStorageBucket bucket;
+
+  Tab3({Key key, @required this.bucket}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(

@@ -31,8 +31,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           password: event.password,
         );
 
+        yield LoginSuccess();
+        await Future.delayed(Duration(milliseconds: 500));
+
         authenticationBloc.dispatch(LoggedIn(token: token));
-        yield LoginInitial();
       } catch (error) {
         yield LoginFailure(error: error.toString());
       }
