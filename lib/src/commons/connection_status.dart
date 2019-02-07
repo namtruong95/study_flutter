@@ -46,8 +46,7 @@ class ConnectionStatusState extends State<ConnectionStatus> {
       result = await _connectivity.checkConnectivity();
     } on PlatformException catch (e) {
       isConnected = false;
-      print(e.toString());
-      return;
+      throw new Exception(e.toString());
     }
 
     // If the widget was removed from the tree while the asynchronous platform
