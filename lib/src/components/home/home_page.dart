@@ -11,13 +11,14 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
+  final Key keyOne = PageStorageKey('pageOne');
+  final Key keyTwo = PageStorageKey('pageTwo');
+
+  final PageStorageBucket bucket = PageStorageBucket();
+
   int _selectedIndex = 1;
 
-  final List<Widget> _tabs = [
-    Tab1(),
-    Tab2(),
-    Tab3(),
-  ];
+  List<Widget> _tabs;
 
   final List<String> _titlePages = [
     'Tab 1',
@@ -32,6 +33,20 @@ class HomePageState extends State<HomePage> {
   }
 
   @override
+  void initState() {
+    _tabs = [
+      Tab1(
+        key: keyOne,
+        bucket: bucket,
+      ),
+      Tab2(),
+      Tab3()
+    ];
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
@@ -40,10 +55,13 @@ class HomePageState extends State<HomePage> {
           title: _titlePages[_selectedIndex],
         ),
       ),
-      body: Container(
-        child: Center(
-          child: _tabs[_selectedIndex],
+      body: PageStorage(
+        child: Container(
+          child: Center(
+            child: _tabs[_selectedIndex],
+          ),
         ),
+        bucket: bucket,
       ),
       bottomNavigationBar: LayoutBottomNavBar(
         onTabSelected: _tabSelect,

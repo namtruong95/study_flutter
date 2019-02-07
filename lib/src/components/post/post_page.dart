@@ -1,23 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:study_flutter/src/commons/bottom_loader.dart';
 
 import 'package:study_flutter/src/components/post/post.dart';
 import 'package:study_flutter/src/models/post.dart';
 
 class PostPage extends StatefulWidget {
+  final PageStorageBucket bucket;
+
+  const PostPage({Key key, @required this.bucket}) : super(key: key);
+
   @override
   _PostPageState createState() => _PostPageState();
 }
 
 class _PostPageState extends State<PostPage> {
   final _scrollController = ScrollController();
-  final PostBloc _postBloc = PostBloc(httpClient: http.Client());
+  final PostBloc _postBloc = PostBloc();
   final _scrollThreshold = 200.0;
 
   _PostPageState() {
     _scrollController.addListener(_onScroll);
-    _postBloc.dispatch(Fetch());
+  }
+
+  @override
+  void initState() {
+    final posts =
+        widget.bucket.readState(context, identifier: ValueKey('Post'));
+    if (posts != null) {
+      _postBloc.dispatch(FetchPostLocal(posts: posts));
+    } else {
+      _postBloc.dispatch(Fetch());
+    }
+    super.initState();
   }
 
   @override
@@ -43,6 +59,10 @@ class _PostPageState extends State<PostPage> {
                   child: Text('no posts'),
                 );
               }
+
+              widget.bucket.writeState(context, state.posts,
+                  identifier: ValueKey('Post'));
+
               return ListView.builder(
                 itemBuilder: (BuildContext context, int index) {
                   return index >= state.posts.length
@@ -73,24 +93,6 @@ class _PostPageState extends State<PostPage> {
     if (maxScroll - currentScroll <= _scrollThreshold) {
       _postBloc.dispatch(Fetch());
     }
-  }
-}
-
-class BottomLoader extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: Center(
-        child: SizedBox(
-          width: 33,
-          height: 33,
-          child: CircularProgressIndicator(
-            strokeWidth: 1.5,
-          ),
-        ),
-      ),
-    );
   }
 }
 

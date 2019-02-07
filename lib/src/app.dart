@@ -6,7 +6,6 @@ import 'package:study_flutter/src/commons/splash_page.dart';
 import 'package:study_flutter/src/components/authentication/authentication.dart';
 import 'package:study_flutter/src/components/home/home.dart';
 import 'package:study_flutter/src/components/login/login.dart';
-import 'package:study_flutter/src/components/post/post.dart';
 import 'package:study_flutter/src/repositories/user_repository.dart';
 
 class App extends StatefulWidget {
@@ -57,9 +56,6 @@ class _AppState extends State<App> {
             }
           },
         ),
-        routes: <String, WidgetBuilder>{
-          '/posts': (BuildContext context) => new PostPage(),
-        },
       ),
     );
   }
