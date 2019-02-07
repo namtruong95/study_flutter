@@ -28,6 +28,23 @@ class _AppState extends State<App> {
     super.dispose();
   }
 
+  Widget _buildState(AuthenticationState state) {
+    if (state is AuthenticationUninitialized) {
+      return SplashPage();
+    }
+    if (state is AuthenticationAuthenticated) {
+      return HomePage();
+    }
+    if (state is AuthenticationUnauthenticated) {
+      return LoginPage();
+    }
+    if (state is AuthenticationLoading) {
+      return LoadingIndicator();
+    }
+
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AuthenticationBloc>(
@@ -36,18 +53,7 @@ class _AppState extends State<App> {
         home: BlocBuilder<AuthenticationEvent, AuthenticationState>(
           bloc: _authenticationBloc,
           builder: (BuildContext context, AuthenticationState state) {
-            if (state is AuthenticationUninitialized) {
-              return SplashPage();
-            }
-            if (state is AuthenticationAuthenticated) {
-              return HomePage();
-            }
-            if (state is AuthenticationUnauthenticated) {
-              return LoginPage();
-            }
-            if (state is AuthenticationLoading) {
-              return LoadingIndicator();
-            }
+            return _buildState(state);
           },
         ),
       ),
