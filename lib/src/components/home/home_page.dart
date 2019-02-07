@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:study_flutter/src/commons/connection_status.dart';
 
 import 'package:study_flutter/src/components/tab_layout/tab_layout.dart';
 import 'package:study_flutter/src/components/tabs/tabs.dart';
@@ -65,8 +66,13 @@ class HomePageState extends State<HomePage> {
       body: PageStorage(
         bucket: bucket,
         child: Container(
-          child: Center(
-            child: _tabs[_selectedIndex],
+          child: Column(
+            children: <Widget>[
+              ConnectionStatus(),
+              Expanded(
+                child: _tabs[_selectedIndex],
+              ),
+            ],
           ),
         ),
       ),

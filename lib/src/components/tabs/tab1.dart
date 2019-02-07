@@ -8,12 +8,8 @@ class Tab1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      key: PageStorageKey('Tab1'),
-      resizeToAvoidBottomPadding: false,
-      body: PostPage(
-        bucket: this.bucket,
-      ),
+    return PostPage(
+      bucket: this.bucket,
     );
   }
 }

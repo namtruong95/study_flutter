@@ -16,18 +16,18 @@ class LayoutBottomNavBar extends StatelessWidget {
     return BottomNavigationBar(
       onTap: _updateIndex,
       currentIndex: selectedIndex,
-      items: [
+      items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: new Icon(Icons.home),
-          title: new Text('Home'),
+          title: new Text('Tab 1'),
         ),
         BottomNavigationBarItem(
           icon: new Icon(Icons.mail),
-          title: new Text('Messages'),
+          title: new Text('Tab 2'),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
-          title: Text('Profile'),
+          title: Text('Tab 3'),
         )
       ],
     );
