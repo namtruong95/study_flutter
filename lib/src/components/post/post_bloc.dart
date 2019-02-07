@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:rxdart/rxdart.dart';
 import 'package:bloc/bloc.dart';
 import 'package:study_flutter/src/components/post/post.dart';
@@ -35,7 +37,11 @@ class PostBloc extends Bloc<PostEvent, PostState> {
                 );
         }
       } catch (e) {
-        yield PostError();
+        if (e is SocketException) {
+          return;
+        } else {
+          yield PostError();
+        }
       }
     }
 
