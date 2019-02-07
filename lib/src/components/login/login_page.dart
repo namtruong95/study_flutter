@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:study_flutter/src/commons/container_bg.dart';
 
 import 'package:study_flutter/src/components/authentication/authentication.dart';
 import 'package:study_flutter/src/components/login/login.dart';
@@ -28,12 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: null,
-      body: new Container(
-        decoration: new BoxDecoration(
-          image: new DecorationImage(
-              image: new AssetImage('lib/assets/bg/login_bg.jpg'),
-              fit: BoxFit.cover),
-        ),
+      body: new ContainerBg(
         child: Center(
           child: ClipRect(
             child: BackdropFilter(

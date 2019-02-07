@@ -65,7 +65,10 @@ class _PostPageState extends State<PostPage> {
               return ListView.builder(
                 itemBuilder: (BuildContext context, int index) {
                   return index >= state.posts.length
-                      ? BottomLoader()
+                      ? Padding(
+                          padding: EdgeInsets.only(top: 20, bottom: 20),
+                          child: BottomLoader(),
+                        )
                       : PostWidget(post: state.posts[index]);
                 },
                 itemCount: state.hasReachedMax

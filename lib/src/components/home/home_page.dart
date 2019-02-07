@@ -13,6 +13,7 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   final Key keyOne = PageStorageKey('pageOne');
   final Key keyTwo = PageStorageKey('pageTwo');
+  final Key keyThree = PageStorageKey('pageThree');
 
   final PageStorageBucket bucket = PageStorageBucket();
 
@@ -39,8 +40,14 @@ class HomePageState extends State<HomePage> {
         key: keyOne,
         bucket: bucket,
       ),
-      Tab2(),
-      Tab3()
+      Tab2(
+        key: keyTwo,
+        bucket: bucket,
+      ),
+      Tab3(
+        key: keyThree,
+        bucket: bucket,
+      )
     ];
 
     super.initState();
@@ -56,12 +63,12 @@ class HomePageState extends State<HomePage> {
         ),
       ),
       body: PageStorage(
+        bucket: bucket,
         child: Container(
           child: Center(
             child: _tabs[_selectedIndex],
           ),
         ),
-        bucket: bucket,
       ),
       bottomNavigationBar: LayoutBottomNavBar(
         onTabSelected: _tabSelect,
