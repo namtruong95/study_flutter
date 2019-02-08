@@ -9,6 +9,11 @@ class Fetch extends PostEvent {
   String toString() => 'Fetch';
 }
 
+class Refetch extends PostEvent {
+  @override
+  String toString() => 'Refetch';
+}
+
 class FetchPostLocal extends PostEvent {
   final List<Post> posts;
 
