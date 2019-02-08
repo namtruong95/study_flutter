@@ -35,6 +35,12 @@ class _PostPageState extends State<PostPage> {
     super.initState();
   }
 
+  Future<void> _refresh() {
+    _postBloc.dispatch(Refetch());
+
+    return Future.delayed(Duration(milliseconds: 1000));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -62,19 +68,22 @@ class _PostPageState extends State<PostPage> {
               widget.bucket.writeState(context, state.posts,
                   identifier: ValueKey('Post'));
 
-              return ListView.builder(
-                itemBuilder: (BuildContext context, int index) {
-                  return index >= state.posts.length
-                      ? Padding(
-                          padding: EdgeInsets.only(top: 20, bottom: 20),
-                          child: BottomLoader(),
-                        )
-                      : PostWidget(post: state.posts[index]);
-                },
-                itemCount: state.hasReachedMax
-                    ? state.posts.length
-                    : state.posts.length + 1,
-                controller: _scrollController,
+              return RefreshIndicator(
+                onRefresh: _refresh,
+                child: ListView.builder(
+                  itemBuilder: (BuildContext context, int index) {
+                    return index >= state.posts.length
+                        ? Padding(
+                            padding: EdgeInsets.only(top: 20, bottom: 20),
+                            child: BottomLoader(),
+                          )
+                        : PostWidget(post: state.posts[index]);
+                  },
+                  itemCount: state.hasReachedMax
+                      ? state.posts.length
+                      : state.posts.length + 1,
+                  controller: _scrollController,
+                ),
               );
             }
           },

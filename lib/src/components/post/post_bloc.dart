@@ -48,6 +48,11 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     if (event is FetchPostLocal) {
       yield PostLoaded(posts: event.posts, hasReachedMax: false);
     }
+
+    if (event is Refetch) {
+      final posts = await _fetchPosts(0, 20);
+      yield PostLoaded(posts: posts, hasReachedMax: false);
+    }
   }
 
   bool _hasReachedMax(PostState state) =>
