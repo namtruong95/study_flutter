@@ -28,7 +28,7 @@ class _PostPageState extends State<PostPage> {
     final posts =
         widget.bucket.readState(context, identifier: ValueKey('Post'));
     if (posts != null) {
-      _postBloc.dispatch(FetchPostLocal(posts: posts));
+      _postBloc.dispatch(FetchPostFromBucket(posts: posts));
     } else {
       _postBloc.dispatch(Fetch());
     }
@@ -48,7 +48,7 @@ class _PostPageState extends State<PostPage> {
         child: BlocBuilder(
           bloc: _postBloc,
           builder: (BuildContext context, PostState state) {
-            if (state is PostUninitialized) {
+            if (state is PostInitialized) {
               return Center(
                 child: CircularProgressIndicator(),
               );

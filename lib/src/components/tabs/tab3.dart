@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:study_flutter/src/components/contacts/contacts.dart';
 
 class Tab3 extends StatelessWidget {
   final PageStorageBucket bucket;
@@ -7,18 +8,8 @@ class Tab3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: new Center(
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            new Text(
-              "Tab 3",
-              style: new TextStyle(color: Colors.black),
-            )
-          ],
-        ),
-      ),
+    return ContactsPage(
+      bucket: bucket,
     );
   }
 }
