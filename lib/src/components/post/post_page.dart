@@ -59,14 +59,14 @@ class _PostPageState extends State<PostPage> {
               );
             }
             if (state is PostLoaded) {
+              widget.bucket.writeState(context, state.posts,
+                  identifier: ValueKey('Post'));
+
               if (state.posts.isEmpty) {
                 return Center(
                   child: Text('no posts'),
                 );
               }
-
-              widget.bucket.writeState(context, state.posts,
-                  identifier: ValueKey('Post'));
 
               return RefreshIndicator(
                 onRefresh: _refresh,

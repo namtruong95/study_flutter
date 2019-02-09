@@ -19,13 +19,12 @@ class IOSAccessContacts extends ContactsState {
 }
 
 class ContactsLoaded extends ContactsState {
-  final List<Contact> contacts;
+  List<Contact> contacts;
 
   ContactsLoaded({this.contacts});
 
   ContactsLoaded copyWith({
     List<Contact> contacts,
-    bool hasReachedMax,
   }) {
     return ContactsLoaded(
       contacts: contacts ?? this.contacts,

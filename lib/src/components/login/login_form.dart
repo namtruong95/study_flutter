@@ -48,7 +48,7 @@ class _LoginFormState extends State<LoginForm> {
         return Column(
           children: <Widget>[
             Text(
-              "Login App",
+              'Login App',
               textScaleFactor: 2.0,
             ),
             Form(

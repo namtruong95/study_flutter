@@ -21,7 +21,7 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
   @override
   Stream<ContactsState> mapEventToState(
       ContactsState currentState, ContactsEvent event) async* {
-    if (event is Fetch || event is Refetch) {
+    if (event is Fetch) {
       try {
         if (currentState is ContactsInitialized) {
           final contacts = await contactsRepo.getListPost();
@@ -40,6 +40,15 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
 
     if (event is FetchContactsFromBucket) {
       yield ContactsLoaded(contacts: event.contacts);
+    }
+
+    if (event is Refetch) {
+      yield ContactsInitialized();
+      final contacts = await contactsRepo.getListPost();
+
+      if (currentState is ContactsLoaded) {
+        yield currentState.copyWith(contacts: contacts);
+      }
     }
   }
 }

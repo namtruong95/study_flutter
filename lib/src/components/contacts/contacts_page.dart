@@ -2,7 +2,9 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_permissions/simple_permissions.dart';
+import 'package:study_flutter/src/commons/link_text_span.dart';
 import 'package:study_flutter/src/components/contacts/contacts.dart';
+import 'package:study_flutter/src/components/contacts_detail/contacts_detail.dart';
 
 class ContactsPage extends StatefulWidget {
   final PageStorageBucket bucket;
@@ -40,7 +42,7 @@ class ContactsPageState extends State<ContactsPage> {
   Widget build(BuildContext context) {
     return Container(
       child: Center(
-        child: BlocBuilder(
+        child: BlocBuilder<ContactsEvent, ContactsState>(
           bloc: _contactsBloc,
           builder: (BuildContext context, ContactsState state) {
             if (state is ContactsInitialized) {
@@ -65,14 +67,28 @@ class ContactsPageState extends State<ContactsPage> {
             }
 
             if (state is ContactsLoaded) {
-              if (state.contacts.isEmpty) {
-                return Center(
-                  child: Text('no contacts'),
-                );
-              }
-
               widget.bucket.writeState(context, state.contacts,
                   identifier: ValueKey('Contacts'));
+
+              if (state.contacts.isEmpty) {
+                return Center(
+                  child: RichText(
+                    text: TextSpan(children: <TextSpan>[
+                      TextSpan(
+                          text: 'no contacts \n',
+                          style: TextStyle(
+                            color: Colors.black,
+                          )),
+                      LinkTextSpan(
+                          style: TextStyle(
+                            color: Colors.blue,
+                          ),
+                          onPressed: _refresh,
+                          text: 'tap to reload!')
+                    ]),
+                  ),
+                );
+              }
 
               return RefreshIndicator(
                 onRefresh: _refresh,
@@ -80,6 +96,7 @@ class ContactsPageState extends State<ContactsPage> {
                   itemBuilder: (BuildContext context, int index) {
                     return ContactsWidget(
                       contact: state.contacts[index],
+                      contactsBloc: _contactsBloc,
                     );
                   },
                   itemCount: state.contacts.length,
@@ -95,12 +112,22 @@ class ContactsPageState extends State<ContactsPage> {
 
 class ContactsWidget extends StatelessWidget {
   final Contact contact;
+  final ContactsBloc contactsBloc;
 
-  ContactsWidget({Key key, @required this.contact}) : super(key: key);
+  ContactsWidget({Key key, @required this.contact, this.contactsBloc})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) => ContactsDetailPage(
+                contact: contact, contactsBloc: contactsBloc),
+          ),
+        );
+      },
       leading: (contact.avatar != null && contact.avatar.length > 0)
           ? CircleAvatar(backgroundImage: MemoryImage(contact.avatar))
           : CircleAvatar(
@@ -110,7 +137,7 @@ class ContactsWidget extends StatelessWidget {
                     : '',
               ),
             ),
-      title: Text(contact.displayName ?? ""),
+      title: Text(contact.displayName ?? ''),
     );
   }
 }
