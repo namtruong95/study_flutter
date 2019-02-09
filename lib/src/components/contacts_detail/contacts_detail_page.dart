@@ -1,5 +1,8 @@
+import 'dart:io' show Platform;
+
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:study_flutter/src/commons/empty_widget.dart';
 import 'package:study_flutter/src/components/contacts/contacts.dart';
 
 class ContactsDetailPage extends StatelessWidget {
@@ -19,13 +22,14 @@ class ContactsDetailPage extends StatelessWidget {
             content: new Text('Do you want remove this contact?'),
             actions: <Widget>[
               new RaisedButton(
-                onPressed: () {
-                  Navigator.pop(context, true);
-
-                  ContactsService.deleteContact(contact).then((success) {
-                    contactsBloc.dispatch(Refetch());
-                    Navigator.pop(context);
-                  });
+                onPressed: () async {
+                  if (Platform.isIOS) {
+                    Navigator.pop(context, true);
+                    ContactsService.deleteContact(contact).then((res) {
+                      contactsBloc.dispatch(Refetch());
+                      Navigator.pop(context);
+                    });
+                  }
                 },
                 child: Text(
                   'OK',
@@ -55,11 +59,13 @@ class ContactsDetailPage extends StatelessWidget {
             icon: Icon(Icons.share),
             onPressed: () => shareVCFCard(context, contact: contact),
           ),
-          IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () =>
-                _removeContact(context: context, contactsBloc: contactsBloc),
-          ),
+          Platform.isIOS
+              ? IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () => _removeContact(
+                      context: context, contactsBloc: contactsBloc),
+                )
+              : EmptyWidget(),
         ],
       ),
       body: SafeArea(

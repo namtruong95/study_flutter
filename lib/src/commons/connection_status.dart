@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:connectivity/connectivity.dart';
+import 'package:study_flutter/src/commons/empty_widget.dart';
 
 class ConnectionStatus extends StatefulWidget {
   @override
@@ -65,10 +66,7 @@ class ConnectionStatusState extends State<ConnectionStatus> {
   @override
   Widget build(BuildContext context) {
     return isConnected
-        ? Container(
-            width: 0,
-            height: 0,
-          )
+        ? EmptyWidget()
         : Container(
             width: double.infinity,
             decoration: BoxDecoration(
