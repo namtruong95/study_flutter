@@ -14,10 +14,10 @@ class Refetch extends PostEvent {
   String toString() => 'Refetch';
 }
 
-class FetchPostLocal extends PostEvent {
+class FetchPostFromBucket extends PostEvent {
   final List<Post> posts;
 
-  FetchPostLocal({@required this.posts});
+  FetchPostFromBucket({@required this.posts});
 
   @override
   String toString() => 'FetchPostLocal';

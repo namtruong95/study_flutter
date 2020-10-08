@@ -13,7 +13,7 @@ class Tab2 extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             new Text(
-              "Tab 2",
+              'Tab 2',
               style: new TextStyle(color: Colors.black),
             )
           ],

@@ -5,9 +5,9 @@ abstract class PostState extends Equatable {
   PostState([List props = const []]) : super(props);
 }
 
-class PostUninitialized extends PostState {
+class PostInitialized extends PostState {
   @override
-  String toString() => 'PostUninitialized';
+  String toString() => 'PostInitialized';
 }
 
 class PostError extends PostState {

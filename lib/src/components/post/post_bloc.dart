@@ -16,13 +16,13 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   }
 
   @override
-  get initialState => PostUninitialized();
+  get initialState => PostInitialized();
 
   @override
   Stream<PostState> mapEventToState(currentState, event) async* {
     if (event is Fetch && !_hasReachedMax(currentState)) {
       try {
-        if (currentState is PostUninitialized) {
+        if (currentState is PostInitialized) {
           final posts = await _fetchPosts(0, 20);
           yield PostLoaded(posts: posts, hasReachedMax: false);
         }
@@ -45,7 +45,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       }
     }
 
-    if (event is FetchPostLocal) {
+    if (event is FetchPostFromBucket) {
       yield PostLoaded(posts: event.posts, hasReachedMax: false);
     }
 

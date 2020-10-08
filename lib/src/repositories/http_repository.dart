@@ -22,9 +22,7 @@ class HttpRepository {
     return this
         .httpClient
         .get(uri, headers: headers)
-        .then((http.Response response) {
-      return _handleResponse(response);
-    });
+        .then((http.Response response) => _handleResponse(response));
   }
 
   FutureOr<dynamic> post(String url, bodyJson, [paramsJson]) async {
@@ -43,9 +41,7 @@ class HttpRepository {
           headers: headers,
           body: json.encode(bodyJson),
         )
-        .then((http.Response response) {
-      return _handleResponse(response);
-    });
+        .then((http.Response response) => _handleResponse(response));
   }
 
   Future<Map<String, String>> _generateHeaders() async {
@@ -70,7 +66,7 @@ class HttpRepository {
     if (statusCode < 200 || statusCode >= 400 || json == null) {
       final message = _decoder.convert(res)['message'];
 
-      throw new Exception(message ?? "Error while fetching data");
+      throw new Exception(message ?? 'Error while fetching data');
     }
 
     return _decoder.convert(res);
